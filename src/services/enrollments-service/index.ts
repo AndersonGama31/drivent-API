@@ -8,13 +8,21 @@ import { exclude } from '@/utils/prisma-utils';
 async function getAddressFromCEP({ cep }: { cep: string }) {
     const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json`);
 
-    if (!result.data) {
+    if (!result.data || result.data.erro) {
         throw notFoundError();
     }
 
-    console.log(result.data)
+    const { bairro, localidade, logradouro, uf, complemento } = result.data;
 
-    return result.data;
+    const address = {
+        bairro,
+        cidade: localidade,
+        logradouro,
+        uf,
+        complemento
+    };
+
+    return address;
 }
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
