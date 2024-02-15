@@ -12,22 +12,22 @@ import { usersRouter, authenticationRouter, eventsRouter, enrollmentsRouter } fr
 
 const app = express();
 app
-  .use(cors())
-  .use(express.json())
-  .get('/health', (_req, res) => res.send('OK!'))
-  .use('/users', usersRouter)
-  .use('/auth', authenticationRouter)
-  .use('/event', eventsRouter)
-  .use('/enrollments', enrollmentsRouter)
-  .use(handleApplicationErrors);
+    .use(cors())
+    .use(express.json())
+    .get('/health', (_req, res) => res.send('OK!'))
+    .use('/users', usersRouter)
+    .use('/auth', authenticationRouter)
+    .use('/event', eventsRouter)
+    .use('/enrollments', enrollmentsRouter)
+    .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
-  connectDb();
-  return Promise.resolve(app);
+    connectDb();
+    return Promise.resolve(app);
 }
 
 export async function close(): Promise<void> {
-  await disconnectDB();
+    await disconnectDB();
 }
 
 export default app;
