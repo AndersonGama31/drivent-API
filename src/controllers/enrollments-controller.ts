@@ -21,6 +21,8 @@ export async function postCreateOrUpdateEnrollment(
     res: Response
 ) {
     try {
+        console.log({ body: req.body, userId: req.userId })
+
         await enrollmentsService.createOrUpdateEnrollmentWithAddress({
             ...req.body,
             userId: req.userId
