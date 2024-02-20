@@ -64,7 +64,6 @@ describe('GET /payments', () => {
             await createEnrollmentWithAddress(user);
 
             const response = await server.get('/payments?ticketId=1').set('Authorization', `Bearer ${token}`);
-            console.log({ 'response.body': response })
 
             expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
