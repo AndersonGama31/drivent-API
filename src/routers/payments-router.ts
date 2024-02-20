@@ -7,6 +7,6 @@ const paymentsRouter = Router();
 paymentsRouter
     .all('/*', authenticateToken)
     .get('/', getPaymentByTicketId)
-    .post('/', paymentProcess);
+    .post('/process', paymentProcess);
 
 export { paymentsRouter };

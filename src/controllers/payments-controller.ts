@@ -4,10 +4,10 @@ import { AuthenticatedRequest } from '@/middlewares';
 import paymentsService from '@/services/payments-service';
 
 export async function getPaymentByTicketId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    try {
-        const ticketId = Number(req.query.ticketId);
-        const { userId } = req;
+    const ticketId = Number(req.query.ticketId);
+    const { userId } = req;
 
+    try {
         if (!ticketId) return res.sendStatus(httpStatus.BAD_REQUEST);
 
         const payment = await paymentsService.getPaymentByTicketId(userId, ticketId);
