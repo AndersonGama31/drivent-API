@@ -54,6 +54,7 @@ async function ticketProcessPayment(ticketId: number) {
     });
 }
 
+
 export default {
     findTicketTypes,
     findTicketByEnrollmentId,

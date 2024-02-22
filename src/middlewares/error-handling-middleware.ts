@@ -42,7 +42,12 @@ export function handleApplicationErrors(
         return res.status(httpStatus.PAYMENT_REQUIRED).send({
             message: err.message,
         });
+    }
 
+    if (err.name === 'CannotBookRoomError') {
+        return res.status(httpStatus.FORBIDDEN).send({
+            message: err.message,
+        });
     }
 
     /* eslint-disable-next-line no-console */
