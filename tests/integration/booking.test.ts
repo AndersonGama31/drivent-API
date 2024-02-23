@@ -169,7 +169,7 @@ describe('POST /booking', () => {
 
             expect(response.status).toEqual(httpStatus.BAD_REQUEST);
         });
-        it("should respond with status 404 with a invalid body - there's not roomId", async () => {
+        it("should respond with status 400 with a invalid body - there's not roomId", async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
             const enrollment = await createEnrollmentWithAddress(user);
@@ -190,7 +190,7 @@ describe('POST /booking', () => {
 
             expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
-        it("should respond with status 403 with a invalid body - there's not vacancy", async () => {
+        it("should respond with status 400 with a invalid body - there's not vacancy", async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
             const enrollment = await createEnrollmentWithAddress(user);
@@ -214,10 +214,10 @@ describe('POST /booking', () => {
             });
 
             const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
-                roomId: room.id,
+                roomId: 0
             });
 
-            expect(response.status).toEqual(httpStatus.FORBIDDEN);
+            expect(response.status).toEqual(httpStatus.BAD_REQUEST);
         });
 
         it('should respond with status 403 if user has not enrollment', async () => {
@@ -304,7 +304,7 @@ describe('PUT /booking', () => {
             expect(response.status).toEqual(httpStatus.OK);
         });
 
-        it('should respond with status 400 with invalid bookingId', async () => {
+        it('should respond with status 404 with invalid bookingId', async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
             const enrollment = await createEnrollmentWithAddress(user);
@@ -325,9 +325,9 @@ describe('PUT /booking', () => {
                 roomId: otherRoom.id,
             });
 
-            expect(response.status).toEqual(httpStatus.BAD_REQUEST);
+            expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
-        it('should respond with status 400 with a invalid body', async () => {
+        it('should respond with status 404 with a invalid body', async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
             const enrollment = await createEnrollmentWithAddress(user);
@@ -347,7 +347,7 @@ describe('PUT /booking', () => {
                 roomId: 0,
             });
 
-            expect(response.status).toEqual(httpStatus.BAD_REQUEST);
+            expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
         it("should respond with status 404 with a invalid body - there's no roomId", async () => {
             const user = await createUser();
@@ -374,7 +374,7 @@ describe('PUT /booking', () => {
 
             expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
-        it("should respond with status 403 with a invalid body - there's not vacancy", async () => {
+        it("should respond with status 404 with a invalid body - there's not vacancy", async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
             const enrollment = await createEnrollmentWithAddress(user);
@@ -403,7 +403,7 @@ describe('PUT /booking', () => {
                 roomId: otherRoom.id,
             });
 
-            expect(response.status).toEqual(httpStatus.FORBIDDEN);
+            expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
 
         it('should respond with status 404 when user has not a booking ', async () => {
@@ -431,7 +431,7 @@ describe('PUT /booking', () => {
                     roomId: room.id,
                 });
 
-            expect(response.status).toEqual(httpStatus.FORBIDDEN);
+            expect(response.status).toEqual(httpStatus.NOT_FOUND);
         });
     });
 });

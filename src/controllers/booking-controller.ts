@@ -34,17 +34,17 @@ export async function createBooking(req: AuthenticatedRequest, res: Response, ne
 
 export async function changeBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const { userId } = req;
-    const { roomId } = req.body as { roomId: number };
-
-    if (!roomId) return res.sendStatus(httpStatus.BAD_REQUEST);
-    if (!userId) return res.sendStatus(httpStatus.UNAUTHORIZED);
+    const bookingId = Number(req.params.bookingId);
+    if (!bookingId) return res.sendStatus(httpStatus.BAD_REQUEST);
 
     try {
+        const { roomId } = req.body as Record<string, number>; // <tipo da chave, tipo do valor>
         const booking = await bookingService.changeBooking(userId, roomId);
+
         return res.status(httpStatus.OK).send({
             bookingId: booking.id,
         });
-    } catch (e) {
-        next(e);
+    } catch (error) {
+        next(error);
     }
 }

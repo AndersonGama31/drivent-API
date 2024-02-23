@@ -1,4 +1,5 @@
 import { notFoundError } from "@/errors";
+import { badRequestError } from "@/errors/bad-request-error";
 import { cannotBookRoomError } from "@/errors/cannot-book-room-error";
 import bookingRepository from "@/repositories/booking-repository";
 import enrollmentRepository from "@/repositories/enrollment-repository";
@@ -45,9 +46,10 @@ async function createBooking(userId: number, roomId: number): Promise<Booking> {
     return booking
 }
 
-async function changeBooking(userId: number, roomId: number): Promise<Booking> {
-    await confirmIfUserCanBook(userId);
+async function changeBooking(userId: number, roomId: number) {
+    if (!roomId) throw badRequestError();
 
+    await checkValidBooking(userId);
     const booking = await bookingRepository.findBookingByUserId(userId);
 
     if (!booking || booking.userId !== userId) throw cannotBookRoomError();
